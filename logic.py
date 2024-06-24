@@ -82,7 +82,7 @@ def need_censor_ram_new(value, blacklist, whitelist, HanLP, sts):
     return [potential, needsCensor, guaranteed]
 
 
-def need_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
+def find_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
     result = HanLP([value])
     coarse = result[type][0]
     potential = {}

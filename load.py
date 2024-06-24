@@ -3,7 +3,7 @@ import utils
 import pymysql
 
 
-def load_blacklist(dir_path):
+def load_from_txt(dir_path):
     print(utils.change_color("正在加载数据", 'red'))
     words = []
     dirc = os.scandir(dir_path)

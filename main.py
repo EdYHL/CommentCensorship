@@ -18,7 +18,7 @@ def handle():
     value = request.get_json()['comment']
     value = logic.remove(value)
     # return logic.need_censor_ram_new(value, blacklist, whitelist, HanLP, sts)
-    return logic.need_censor_dict(value, blacklist, whitelist, HanLP, sts, 'tok/coarse')
+    return logic.find_censor_dict(value, blacklist, whitelist, HanLP, sts, 'tok/coarse')
 
 
 @app.route('/addBlacklist', methods=['POST'])

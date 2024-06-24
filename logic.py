@@ -44,6 +44,8 @@ def need_censor_ram_old(value, blacklist, whitelist, HanLP, sts):
 def contain_str_new(source: str, target: str) -> float:
     if len(target) == 0:
         return False
+    elif source == target:
+        return 1.0
     else:
         count = 0
         index = 0
@@ -95,7 +97,7 @@ def find_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
         if not is_in_whitelist(word, whitelist):
             for censor in blacklist:
                 contains = contain_str_new(word, censor)
-                if word == censor:
+                if contains == 1.0:
                     guaranteed_word_dict[censor] = 1.0
                 elif 0.5 < contains < 1:
                     similarity = sts([(word, censor)])
@@ -155,3 +157,9 @@ def parse_result(g: dict, n: dict, p: dict):
         'guaranteed': guaranteed
     }
 
+
+def censor_websites(source: str, website_list: list):
+    for website in website_list:
+        if source.find(website) != -1:
+            return {website: True}
+    return False

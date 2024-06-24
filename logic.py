@@ -92,23 +92,22 @@ def need_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
         potential_word_dict = {}
         needs_censor_dict = {}
         guaranteed_word_dict = {}
-        for censor in blacklist:
-            contains = contain_str_new(word, censor)
-            if word == censor:
-                guaranteed_word_dict[censor] = 1.0
-            elif 0.5 < contains < 1:
-                similarity = sts([(word, censor)])
-                if 0.0 < similarity[0] < 0.6:
-                    # potential.append([word, censor, similarity[0]])
-                    potential_word_dict[censor] = similarity[0]
-                elif 0.6 <= similarity[0] < 0.95:
-                    # needsCensor.append([word, censor, similarity[0]])
-                    needs_censor_dict[censor] = similarity[0]
-                elif similarity[0] > 0.95:
-                    if is_in_whitelist(word, whitelist) is False:
+        if not is_in_whitelist(word, whitelist):
+            for censor in blacklist:
+                contains = contain_str_new(word, censor)
+                if word == censor:
+                    guaranteed_word_dict[censor] = 1.0
+                elif 0.5 < contains < 1:
+                    similarity = sts([(word, censor)])
+                    if 0.0 < similarity[0] < 0.6:
+                        # potential.append([word, censor, similarity[0]])
+                        potential_word_dict[censor] = similarity[0]
+                    elif 0.6 <= similarity[0] < 0.95:
+                        # needsCensor.append([word, censor, similarity[0]])
+                        needs_censor_dict[censor] = similarity[0]
+                    elif similarity[0] > 0.95:
                         # guaranteed.append([word, censor, similarity[0]])
                         guaranteed_word_dict[censor] = similarity[0]
-
         if len(potential_word_dict) > 0:
             potential[word] = potential_word_dict
         if len(needs_censor_dict) > 0:

@@ -28,9 +28,10 @@ def add_blacklist():
         blacklist.extend(words)
         connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db='censors')
         cursor = connection.cursor()
-        sql = 'INSERT INTO blacklist VALUES %s'
+        sql = 'INSERT INTO blacklist VALUES (null, %s)'
         for word in words:
             cursor.execute(sql, word)
+        connection.commit()
         cursor.close()
         connection.close()
         return 'success'
@@ -45,9 +46,10 @@ def add_white():
         whitelist.extend(words)
         connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db='censors')
         cursor = connection.cursor()
-        sql = 'INSERT INTO whitelist VALUES %s'
+        sql = 'INSERT INTO whitelist VALUES (null, %s)'
         for word in words:
             cursor.execute(sql, word)
+        connection.commit()
         cursor.close()
         connection.close()
         return 'success'

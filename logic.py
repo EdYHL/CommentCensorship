@@ -114,11 +114,7 @@ def need_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
             needsCensor[word] = needs_censor_dict
         if len(guaranteed_word_dict) > 0:
             guaranteed[word] = guaranteed_word_dict
-    return parse_result({
-        'potential': potential,
-        'needsCensor': needsCensor,
-        'guaranteed': guaranteed
-    })
+    return parse_result(guaranteed, needsCensor, potential)
 
 
 def remove(s: str):
@@ -137,10 +133,10 @@ def is_in_whitelist(source, whitelist):
     return False
 
 
-def parse_result(r: dict):
-    guaranteed: dict = r['guaranteed']
-    needsCensor: dict = r['needsCensor']
-    potential: dict = r['potential']
+def parse_result(g: dict, n: dict, p: dict):
+    guaranteed: dict = g
+    needsCensor: dict = n
+    potential: dict = p
     guaranteed_keys = guaranteed.keys()
     needsCensor_keys = needsCensor.keys()
     potential_keys = potential.keys()

@@ -17,7 +17,8 @@ sts = hanlp.load(hanlp.pretrained.sts.STS_ELECTRA_BASE_ZH)  # 语义近似度
 def handle():
     value = request.get_json()['comment']
     value = logic.remove(value)
-    return logic.need_censor_ram_new(value, blacklist, whitelist, HanLP, sts)
+    # return logic.need_censor_ram_new(value, blacklist, whitelist, HanLP, sts)
+    return logic.need_censor_dict(value, blacklist, whitelist, HanLP, sts, 'tok/coarse')
 
 
 @app.route('/addBlacklist', methods=['POST'])
@@ -55,5 +56,5 @@ def add_white():
 
 
 if __name__ == '__main__':
-    # app.run(host='127.0.0.1', port=8081, debug=True)
-    app.run(host='127.0.0.1', debug=True)
+    app.run(host='127.0.0.1', port=8081, debug=True)
+    # app.run(host='0.0.0.0', debug=True)

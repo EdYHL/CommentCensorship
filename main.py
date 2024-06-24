@@ -5,22 +5,24 @@ import hanlp
 import logic
 
 app = Flask(__name__)
-
 blacklist, whitelist = load.load_from_db()
 website_list = []
 HanLP = hanlp.load(hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH)  # 分词
 sts = hanlp.load(hanlp.pretrained.sts.STS_ELECTRA_BASE_ZH)  # 语义近似度
+regular_regrex = ('\\<>——-·`。，、＇：；‘’“”〝〞ˆˇ﹕︰﹔﹖﹑•¨….¸;！´？！～—ˉ｜‖＂〃｀﹫¡¿﹏﹋﹌︴々﹟﹩﹠﹪﹡﹢﹦﹤‐￣¯―﹨ˆ˜﹍﹎<＿_'
+                  '-ˇ~﹉﹊（）〈〉‹›﹛﹜『』〖〗［］《》〔〕{}「」【】︵︷︿︹︽_﹁﹃︻︶︸﹀︺︾ˉ﹂﹄︼❝❞')
+http_regrex = '*#+=-_∶?/[]()&$%\'@.'
 
 
 @app.route('/censor', methods=['POST'])
 def handle():
     value: str = request.get_json()['comment']
-    value = value.replace(' ', '')
+    value = logic.remove(value, regular_regrex)
     containsWebsite = logic.censor_websites(value, website_list)
     if type(containsWebsite) is dict:
         return {'error': '信息包含违禁网站！'}
     else:
-        value = logic.remove(value)
+        value = logic.remove(value, http_regrex)
         # return logic.need_censor_ram_new(value, blacklist, whitelist, HanLP, sts)
         result = logic.find_censor_dict(value, blacklist, whitelist, HanLP, sts, 'tok/coarse')
         result['containsCensoredWebsite'] = containsWebsite

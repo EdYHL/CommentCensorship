@@ -119,7 +119,7 @@ def find_censor_dict(value, blacklist, whitelist, HanLP, sts, type):
     return parse_result(guaranteed, needsCensor, potential)
 
 
-def remove(s: str):
+def remove(s: str, regrex: str):
     regrex: str = ('*#\\/+=-_<>——-·`。，、＇：∶；?‘’“”〝〞ˆˇ﹕︰﹔﹖﹑•¨….¸;！´？！～—ˉ｜‖＂〃｀@﹫¡¿﹏﹋﹌︴々﹟#﹩$﹠&﹪%*﹡﹢﹦﹤‐￣¯―﹨ˆ˜﹍﹎+=<＿_'
                    '-ˇ~﹉﹊（）〈〉‹›﹛﹜『』〖〗［］《》〔〕{}「」【】︵︷︿︹︽_﹁﹃︻︶︸﹀︺︾ˉ﹂﹄︼❝❞')
     result = s
